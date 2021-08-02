@@ -30,23 +30,36 @@ The project aim's to develop un API with nest JS and mongodb
 on this app we fund 
 four mans routes:
 sign up, create a user on the database,  { path: '/users/auth/signup', method: 'post' } 
-params example => "first_name": "test0.1",
+params example => 
+```bash
+			"first_name": "test0.1",
 	                "last_name": "test0.1",
 	                "username": "test0.1",
 	                "email": "test0.1@gmail.com",
 	                "password": "12345678"
+```
                  
 Log-in, give the current user if existed on the database { path: '/users/auth/login', method: 'post' }
-params example => 	"username": "test0.1",
-	                  "password": "12345678"
+params example => 	
+```bash
+			"username": "test0.1",
+	                "password": "12345678"
+```
 
 Log out, close the account of the current user  { path: '/users/auth/logout/:userID', method: 'get' }
-params example => users/auth/logout/34858783-0ef5-4992-8a43-e3daf85a6009
+params example => 
+```bash
+			users/auth/logout/34858783-0ef5-4992-8a43-e3daf85a6009
+```
 
 Update, update the fields (username, email) of the current user { path: '/users/update/:userID', method: 'patch' }
-params example => users/361d5736-8a8a-45f4-8449-a247b0f60273
-                  "username": "test2_patch",
+params example => 
+
+```bash
+			users/361d5736-8a8a-45f4-8449-a247b0f60273
+                  	"username": "test2_patch",
 	                "email": "test2.1_patch@gmail.com"
+```
 
 
 
