@@ -10,23 +10,33 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) {
     }
 
-    @Post()
+    @Post('auth/signup')
     async signUp(@Body() createUserDto: CreateUserDto): Promise<User> {
         return this.usersService.insertUser(createUserDto)
     }
 
-    @Get()
+    @Post('auth/login')
+    async logIn(@Body() createUserDto: CreateUserDto): Promise<User> {
+        return this.usersService.logIn(createUserDto.username, createUserDto.password)
+    }
+
+    @Get('auth/logout/:userID')
+    async logOut(@Param('userID') userID: string): Promise<User> {
+        return this.usersService.logOut(userID)
+    }
+
+/*    @Get()
     async getUsers(): Promise<User[]> {
         return this.usersService.getUsers();
-    }
+    }*/
 
-    @Get(':userId')
-    async getUser(@Param('userId') userId: string): Promise<User> {
-        return this.usersService.getUserById(userId);
-    }
+    /*    @Get(':userId')
+        async getUser(@Param('userId') userId: string): Promise<User> {
+            return this.usersService.getUserById(userId);
+        }*/
 
-    @Patch(':userId')
-    async updateUser(@Param('userId') userId: string, @Body() updateUserDto: UpdateUserDto): Promise<User> {
-        return this.usersService.updateUser(userId, updateUserDto);
+    @Patch('update/:userID')
+    async updateUser(@Param('userID') userID: string, @Body() updateUserDto: UpdateUserDto): Promise<User> {
+        return this.usersService.updateUser(userID, updateUserDto);
     }
 }

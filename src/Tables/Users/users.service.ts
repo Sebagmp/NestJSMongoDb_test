@@ -21,14 +21,15 @@ export class UsersService {
     async insertUser(userInfo: CreateUserDto): Promise<User> {
         const newUser = new this.userModel(userInfo);
         newUser.userID = uuidv4();
+        newUser.isLog = false;
         newUser.salt = this.pwd.createSalt();
         newUser.hash = this.pwd.createHash(userInfo.password, newUser.salt);
         return newUser.save();
     }
 
-    async getUsers(): Promise<User[]> {
+/*    async getUsers(): Promise<User[]> {
         return this.userModel.find()
-    }
+    }*/
 
     /*async signIn(userID: string): Promise<User> {
         const currentUser = this.userModel.findOne({userID: userID});
@@ -42,9 +43,19 @@ export class UsersService {
         return this.userModel.findOne({userID: userID});
     }*/
 
-    async getUserById(userID: string): Promise<User> {
-        return this.userModel.findOne({userID: userID});
+    async logIn(username: string, password: string): Promise<User> {
+        const user = this.userModel.findOne({username: username, password: password});
+        if (user) {
+            const use = new UpdateUserDto();
+            const userFilterQuery = {username};
+            use.isLog = true;
+            return this.userModel.findOneAndUpdate(userFilterQuery, use, {new: true});
+        }
     }
+
+/*    async getUserById(userID: string): Promise<User> {
+        return this.userModel.findOne({userID: userID});
+    }*/
 
     async updateUserInfo(userID: string, user: Partial<User>) {
         const userFilterQuery = {userID};
@@ -53,5 +64,12 @@ export class UsersService {
 
     async updateUser(userID: string, userUpdates: UpdateUserDto): Promise<User> {
         return this.updateUserInfo(userID, userUpdates);
+    }
+
+    async logOut(userID: string): Promise<User> {
+        const use = new UpdateUserDto();
+        use.isLog = false;
+        const userFilterQuery = {userID};
+        return this.userModel.findOneAndUpdate(userFilterQuery, use, {new: true});
     }
 }

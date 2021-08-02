@@ -6,7 +6,7 @@ export class PostsController {
     constructor(private readonly postsService: PostsService) {}
 
     @Post()
-    signUp(
+    createPost(
         @Body('title') postTitle: string,
         @Body('text') postText: string,
     ) {

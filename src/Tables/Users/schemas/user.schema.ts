@@ -24,6 +24,9 @@ export class User {
     userID: string;
 
     @Prop()
+    isLog: boolean;
+
+    @Prop()
     hash: string;
 
     @Prop()
