@@ -9,7 +9,7 @@ import {UsersModule} from "./Tables/Users/users.module";
 @Module({
     //mongosh "mongodb+srv://cluster0.l2pcd.mongodb.net/nestjs-mongodb-demo" --username db-nestjs-mongodb-demo
     imports: [MongooseModule.forRoot(
-        'mongodb+srv://cluster0.l2pcd.mongodb.net/nestjs-mongodb-demo', {useNewUrlParser: true}),
+        'mongodb+srv://db-nestjs-mongodb-demo:db-nestjs-mongodb-demo@cluster0.l2pcd.mongodb.net/nestjs-mongodb-demo', {useNewUrlParser: true}),
         PostsModule, UsersModule],
     controllers: [AppController],
     providers: [AppService],
