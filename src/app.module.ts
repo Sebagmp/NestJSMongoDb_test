@@ -5,17 +5,19 @@ import { AppService } from "./app.service";
 import { UsersModule } from "./api/tables/users/users.module";
 
 import { ConfigModule } from "@nestjs/config";
-import { AuthModule } from './api/tables/auth/auth.module';
+import { AuthModule } from "./api/tables/auth/auth.module";
+import { PostsModule } from "./api/tables/posts/posts.module";
 
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(
-    process.env.MONGODB_CONNECTION_STRING,
-    { useNewUrlParser: true }),
+      process.env.MONGODB_CONNECTION_STRING,
+      { useNewUrlParser: true }),
     UsersModule,
-    AuthModule],
+    AuthModule,
+    PostsModule],
   controllers: [AppController],
   providers: [AppService]
 })

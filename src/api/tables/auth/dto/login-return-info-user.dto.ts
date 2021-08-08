@@ -1,4 +1,3 @@
-import { IsEmail, IsNotEmpty, MaxLength, MinLength, Matches } from "class-validator";
 import { User } from "../../users/schemas/user.schema";
 
 export class LoginReturnInfoUserDto {
