@@ -43,14 +43,7 @@ const mockedPostUpdate = (postId: string, updatePost: UpdatePostDto) => {
 };
 
 const mockedPostRemove = (postId: string) => {
-  return {
-    _id: postId,
-    userId: expect.any(Types.ObjectId),
-    title: expect.any(String),
-    description: expect.any(String),
-    createdAt: expect.any(Date),
-    updatedAt: expect.any(Date)
-  };
+  return mockedPostFindOne(postId);
 };
 
 export const postUnitTestParams = {

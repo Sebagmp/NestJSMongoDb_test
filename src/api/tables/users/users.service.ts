@@ -97,9 +97,10 @@ export class UsersService {
     return new ReturnInfoUserDto(user);
   }
 
-  async update(_id: string, updateUserDto: UpdateUserDto) {
+  async update(_id: string, updateUserDto: UpdateUserDto): Promise<ReturnInfoUserDto> {
     updateUserDto.updatedAt = new Date();
-    return this.updateInfo(updateUserDto, { _id });
+    const user = await this.updateInfo(updateUserDto, { _id });
+    return new ReturnInfoUserDto(user);
   }
 
   async remove(_id: string): Promise<ReturnInfoUserDto> {

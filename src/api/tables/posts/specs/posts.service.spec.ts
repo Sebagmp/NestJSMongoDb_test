@@ -2,9 +2,6 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { PostsService } from "../posts.service";
 import { Post } from "../schemas/post.schema";
 import { getRepositoryToken } from "@nestjs/typeorm";
-import { Schema, Types } from "mongoose";
-import { PostsModule } from "../posts.module";
-import { PostsController } from "../posts.controller";
 import { Repository } from "typeorm";
 import { mockedPost, MockType, postRepositoryMockFactory, postRepositoryMockValue, postUnitTestParams } from "./mock";
 import { HttpException, HttpStatus } from "@nestjs/common";
@@ -66,15 +63,15 @@ describe("PostsService", () => {
   });
 
   describe("findOne post", () => {
-    it("It should return un post", async () => {
+    it("It should return a post", async () => {
       postRepositoryMock.findOne.mockReturnValue(postUnitTestParams.newPost);
       expect(await postService.findOne(postUnitTestParams.postId))
         .toBe(postUnitTestParams.newPost);
     });
   });
 
-  describe("Update pst", () => {
-    it("should return user ", async () => {
+  describe("Update post", () => {
+    it("should return a post ", async () => {
       postRepositoryMock.findOne.mockReturnValue(mockedPost.update);
       expect(await postService
         .update(postUnitTestParams.postId, mockedPost.update))

@@ -13,7 +13,7 @@ export class ReturnInfoUserDto {
     this.userId = user.userId;
     this.posts = user.posts;
   }
-  roles: [];
+  roles: string[];
   userId: string;
   _id: string;
   lastName: string;

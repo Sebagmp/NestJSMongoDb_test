@@ -50,7 +50,7 @@ export class User {
 
   @Prop({ require: true })
   @IsNotEmpty()
-  roles: [];
+  roles: string[];
 
   @Prop({ require: true })
   @IsNotEmpty()
