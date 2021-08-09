@@ -1,23 +1,19 @@
 import { User } from "../schemas/user.schema";
-import { Post } from "../../posts/schemas/post.schema";
 
 export class UpdateUserDto {
-  constructor(user?: User) {
+  constructor(user?: Partial<User>) {
     if (!user)
       return;
-    this.firstName = user.firstName;
-    this.lastName = user.lastName;
-    this.email = user.email;
-    this.isLog = user.isLog;
-    this.username = user.username;
     this.updatedAt = user.updatedAt;
+    this.lastName = user.lastName;
+    this.firstName = user.firstName;
+    this.email = user.email;
+    this.username = user.username;
   }
-
+  updatedAt: Date;
   lastName: string;
   firstName: string;
   email: string;
   username: string;
   isLog: boolean;
-  posts: Post[];
-  updatedAt: Date;
 }

@@ -36,6 +36,8 @@ export class User {
   @IsNotEmpty()
   isLog: boolean;
 
+  _id: string;
+
   @Prop({ require: true })
   @IsNotEmpty()
   @IsDate()

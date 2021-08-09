@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Param, Post, Request, UseGuards, ValidationPipe } from "@nestjs/common";
-import { LocalAuthGuard } from "./local-auth.guard";
+import { LocalAuthGuard } from "./guards/local-auth.guard";
 import { AuthService } from "./auth.service";
 import { JwtAuthGuard } from "./jwt/jwt-auth.guard";
 import { RegisterUserDto } from "./dto/register-user.dto"
-import { User } from "../users/schemas/user.schema";
 import { LoginReturnInfoUserDto } from "./dto/login-return-info-user.dto";
+import { ReturnInfoUserDto } from "../users/dto/return-info-user.dto";
 
 @Controller("auth")
 export class AuthController {
@@ -20,7 +20,7 @@ export class AuthController {
   @Post('signup')
   signUp(
     @Body(ValidationPipe) registerUserDto: RegisterUserDto,
-  ): Promise<User> {
+  ): Promise<ReturnInfoUserDto> {
     return this.authService.signUp(registerUserDto);
   }
 
@@ -28,11 +28,5 @@ export class AuthController {
   @Get('logout/:userId')
   async logOut(@Param('userId') userId: string) {
     await this.authService.logOut(userId)
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get("profile")
-  getProfile(@Request() req) {
-    return req.user;
   }
 }

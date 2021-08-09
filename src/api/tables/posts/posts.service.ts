@@ -14,7 +14,7 @@ export class PostsService {
               private usersService: UsersService) {
   }
 
-  async create(newPostInfo: CreatePostDto): Promise<Post>{
+  async create(newPostInfo: CreatePostDto): Promise<Post> {
     const { title, userId } = newPostInfo;
     const userExist = await this.postModel.findOne({ title });
     if (userExist) {
@@ -38,20 +38,20 @@ export class PostsService {
   }
 
   async findAll() {
-    const info = await this.postModel.find().populate(User.name);
-    return info;
+    return this.postModel.find().populate(User.name);
   }
 
   async findOne(id: string) {
     return this.postModel.findOne({ id });
   }
 
-  async update(id: string, updatePostDto: UpdatePostDto) {
+  async update(_id: string, updatePostDto: UpdatePostDto) {
     updatePostDto.updatedAt = new Date();
-    return this.postModel.findOneAndUpdate(updatePostDto, { id });
+    return this.postModel.findOneAndUpdate({ _id },
+      updatePostDto, { useFindAndModify: false });
   }
 
   async remove(id: string) {
-    return this.postModel.findByIdAndDelete(id)
+    return this.postModel.findByIdAndDelete(id);
   }
 }

@@ -1,5 +1,5 @@
 import { ConflictException, Injectable, InternalServerErrorException } from "@nestjs/common";
-import { Model, Types } from "mongoose";
+import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { User, UserDocument } from "./schemas/user.schema";
 import { UpdateUserDto } from "./dto/update-user.dto";
@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import { RegisterUserDto } from "../auth/dto/register-user.dto";
 import * as bcrypt from "bcryptjs";
 import { Post } from "../posts/schemas/post.schema";
+import { ReturnInfoUserDto } from "./dto/return-info-user.dto";
 
 
 @Injectable()
@@ -43,9 +44,9 @@ export class UsersService {
     return newUser;
   }
 
-  async updateInfo(updateInfo: UpdateUserDto, userFilterQuery: {}) {
+  async updateInfo(updateInfo: Partial<UpdateUserDto>, userFilterQuery: {}) {
     updateInfo.updatedAt = new Date();
-    return this.userModel.findOneAndUpdate(userFilterQuery, updateInfo);
+    return this.userModel.findOneAndUpdate(userFilterQuery, updateInfo, { useFindAndModify: false });
   }
 
   async logOut(userId: string) {
@@ -54,22 +55,54 @@ export class UsersService {
     await this.updateInfo(userUpdateInfo, { userId });
   }
 
-  async updatePostsArray(userId: string, newPost: Post)
-  {
-    const userCreator = await this.findById({userId});
+  async updatePostsArray(userId: string, newPost: Post) {
+    const userCreator = await this.findById({ userId });
     userCreator.posts.push(newPost);
-    return await this.updateInfo(userCreator, {userId})
+    return await this.updateInfo(userCreator, { userId });
   }
 
-  async findById(userId: {}): Promise<User> {
-    return this.userModel.findOne(userId);
+  async findById(userId: {}): Promise<ReturnInfoUserDto> {
+    const user = await this.userModel.findOne(userId);
+    return new ReturnInfoUserDto(user);
   }
 
-  async findByEmail(email: {}): Promise<User> {
-    return this.userModel.findOne(email);
+  async findByEmail(email: {}): Promise<ReturnInfoUserDto> {
+    const user = await this.userModel.findOne(email);
+    return new ReturnInfoUserDto(user);
   }
 
-  async findByUsername(username: {}): Promise<User> {
+  async findByUsername(username: {}): Promise<ReturnInfoUserDto> {
+    const user = await this.userModel.findOne(username);
+    return new ReturnInfoUserDto(user);
+  }
+
+  async findByUsernameFullInfo(username: {}): Promise<User> {
     return this.userModel.findOne(username);
+  }
+
+  async findAll() {
+    const usersListInfo = [];
+    let count = 0;
+    const usersList = await this.userModel.find();
+    usersList.forEach(function(element) {
+      usersListInfo[count] = new ReturnInfoUserDto(element);
+      count++;
+    });
+    return usersListInfo;
+  }
+
+  async findOne(_id: string): Promise<ReturnInfoUserDto> {
+    const user = await this.userModel.findOne({ _id });
+    return new ReturnInfoUserDto(user);
+  }
+
+  async update(_id: string, updateUserDto: UpdateUserDto) {
+    updateUserDto.updatedAt = new Date();
+    return this.updateInfo(updateUserDto, { _id });
+  }
+
+  async remove(_id: string) : Promise<ReturnInfoUserDto> {
+    const user = await this.userModel.findByIdAndDelete(_id);
+    return new ReturnInfoUserDto(user);
   }
 }

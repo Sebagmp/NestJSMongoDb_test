@@ -8,6 +8,7 @@ import * as bcrypt from "bcryptjs";
 import { NotFoundException } from "@nestjs/common/exceptions/not-found.exception";
 import { UpdateUserDto } from "../users/dto/update-user.dto";
 import { LoginReturnInfoUserDto } from "./dto/login-return-info-user.dto";
+import { ReturnInfoUserDto} from "../users/dto/return-info-user.dto";
 
 @Injectable()
 export class AuthService {
@@ -17,7 +18,7 @@ export class AuthService {
 
   async validateUser(logUser: LogUserDto): Promise<any> {
     const { username, password } = logUser;
-    const currentUser = await this.usersService.findByUsername({ username });
+    const currentUser = await this.usersService.findByUsernameFullInfo({ username });
     if (await AuthService.validatePassword(currentUser, password)) {
       const { password, ...result } = currentUser;
       return result;
@@ -49,14 +50,16 @@ export class AuthService {
     const payload = {
       email: userFound.email,
       sub: userFound.userId,
-      username: userFound.username
+      username: userFound.username,
+      roles: userFound.roles
     };
     const token = this.jwtService.sign(payload);
-    return (new LoginReturnInfoUserDto(token, userFound));
+    return new LoginReturnInfoUserDto(token, userFound);
   }
 
-  async signUp(registerForm: RegisterUserDto): Promise<User> {
-    return this.usersService.create(registerForm);
+  async signUp(registerForm: RegisterUserDto): Promise<ReturnInfoUserDto> {
+    const user = await this.usersService.create(registerForm);
+    return new ReturnInfoUserDto(user);
   }
 
   async logOut(userId: string) {
