@@ -1,5 +1,7 @@
+import { Types } from "mongoose";
+
 export class CreatePostDto {
-  userId: string;
+  userId: Types.ObjectId | string;
   title: string;
   description: string;
 }

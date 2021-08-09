@@ -41,8 +41,8 @@ export class PostsService {
     return this.postModel.find().populate(User.name);
   }
 
-  async findOne(id: string) {
-    return this.postModel.findOne({ id });
+  async findOne(_id: string) {
+    return this.postModel.findOne({ _id });
   }
 
   async update(_id: string, updatePostDto: UpdatePostDto) {

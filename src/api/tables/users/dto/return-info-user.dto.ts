@@ -11,6 +11,7 @@ export class ReturnInfoUserDto {
     this.username = user.username;
     this.roles = user.roles;
     this.userId = user.userId;
+    this.posts = user.posts;
   }
   roles: [];
   userId: string;

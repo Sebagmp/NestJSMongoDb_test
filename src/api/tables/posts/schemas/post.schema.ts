@@ -7,13 +7,13 @@ export type PostDocument = Post & Document;
 
 @Schema()
 export class Post {
-  @Prop({ unique: true, type: Types.ObjectId, ref: "User"})
+  @Prop({ type: Types.ObjectId, ref: "User"})
   userId: Types.ObjectId;
 
   @Prop({ require: true, unique: true })
   title: string;
 
-  @Prop({ require: true, unique: true })
+  @Prop({ require: true })
   description: string;
 
   @Prop({ require: true })

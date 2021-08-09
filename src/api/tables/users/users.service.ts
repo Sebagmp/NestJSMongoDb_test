@@ -1,5 +1,5 @@
 import { ConflictException, Injectable, InternalServerErrorException } from "@nestjs/common";
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { User, UserDocument } from "./schemas/user.schema";
 import { UpdateUserDto } from "./dto/update-user.dto";
@@ -8,6 +8,7 @@ import { RegisterUserDto } from "../auth/dto/register-user.dto";
 import * as bcrypt from "bcryptjs";
 import { Post } from "../posts/schemas/post.schema";
 import { ReturnInfoUserDto } from "./dto/return-info-user.dto";
+import { elementAt } from "rxjs";
 
 
 @Injectable()
@@ -55,10 +56,10 @@ export class UsersService {
     await this.updateInfo(userUpdateInfo, { userId });
   }
 
-  async updatePostsArray(userId: string, newPost: Post) {
-    const userCreator = await this.findById({ userId });
+  async updatePostsArray(_id: Types.ObjectId | string, newPost: Post) {
+    const userCreator = await this.findById({ _id });
     userCreator.posts.push(newPost);
-    return await this.updateInfo(userCreator, { userId });
+    return await this.updateInfo(userCreator, { _id });
   }
 
   async findById(userId: {}): Promise<ReturnInfoUserDto> {
@@ -101,7 +102,7 @@ export class UsersService {
     return this.updateInfo(updateUserDto, { _id });
   }
 
-  async remove(_id: string) : Promise<ReturnInfoUserDto> {
+  async remove(_id: string): Promise<ReturnInfoUserDto> {
     const user = await this.userModel.findByIdAndDelete(_id);
     return new ReturnInfoUserDto(user);
   }
