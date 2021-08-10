@@ -35,7 +35,7 @@ export class AuthService {
     return userCheckPwd && (await AuthService.comparePassword(pwdToCheck, userPwd));
   }
 
-  async login(logForm: any): Promise<LoginReturnInfoUserDto> {
+  async   logIn(logForm: any): Promise<LoginReturnInfoUserDto> {
     const email = logForm._doc.email;
     let userFound = await this.usersService.findByEmail({ email });
     if (!userFound) {
@@ -44,12 +44,12 @@ export class AuthService {
 
     userFound.isLog = true;
     const userUpdateInfo = new UpdateUserDto(userFound);
-    const userId = userFound.userId;
-    await this.usersService.updateInfo(userUpdateInfo, { userId });
+    const _id = userFound._id;
+    await this.usersService.updateInfo(userUpdateInfo, { _id });
 
     const payload = {
       email: userFound.email,
-      sub: userFound.userId,
+      sub: userFound._id,
       username: userFound.username,
       roles: userFound.roles
     };
@@ -62,10 +62,10 @@ export class AuthService {
     return new ReturnInfoUserDto(user);
   }
 
-  async logOut(userId: string) {
-    const currentUser = await this.usersService.findById({ userId });
+  async logOut(_id: string) {
+    const currentUser = await this.usersService.findById({ _id });
     if (!currentUser)
       throw new NotFoundException("User Not found");
-    await this.usersService.logOut(currentUser.userId);
+    await this.usersService.logOut(currentUser._id);
   }
 }

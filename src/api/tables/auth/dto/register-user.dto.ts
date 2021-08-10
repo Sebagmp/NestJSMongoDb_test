@@ -11,7 +11,7 @@ export class RegisterUserDto {
     username: string;
 
     @IsNotEmpty()
-    roles: [];
+    roles: string[];
 
     @IsNotEmpty()
     @IsEmail()

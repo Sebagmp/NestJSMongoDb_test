@@ -10,12 +10,10 @@ export class ReturnInfoUserDto {
     this.isLog = user.isLog;
     this.username = user.username;
     this.roles = user.roles;
-    this.userId = user.userId;
     this.posts = user.posts;
   }
-  roles: string[];
-  userId: string;
   _id: string;
+  roles: string[];
   lastName: string;
   firstName: string;
   email: string;

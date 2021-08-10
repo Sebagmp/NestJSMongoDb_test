@@ -13,8 +13,8 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post("login")
-  async login(@Request() req): Promise<LoginReturnInfoUserDto> {
-    return this.authService.login(req.user);
+  async logIn(@Request() req): Promise<LoginReturnInfoUserDto> {
+    return this.authService.logIn(req.user);
   }
 
   @Post('signup')

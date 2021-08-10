@@ -2,8 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from '../users.service';
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { User } from "../schemas/user.schema";
-import { mockedUser, userRepositoryMockFactory, userRepositoryMockValue, userUnitTestParams } from "../mock";
-import { mockedPost, MockType, postUnitTestParams } from "../../posts/specs/mock";
+import { mockedUser, userRepositoryMockFactory, userRepositoryMockValue, userUnitTestParams, MockType } from "../mock";
 import { Repository } from "typeorm";
 
 describe('UsersService', () => {
@@ -49,7 +48,7 @@ describe('UsersService', () => {
     it("should return user ", async () => {
       userRepositoryMock.findOne  .mockReturnValue(mockedUser.update);
       expect(await usersService
-        .update(userUnitTestParams.userId, mockedUser.update))
+        .update(userUnitTestParams.userId, userUnitTestParams.updateUserDto))
         .toEqual(mockedUser.update);
     });
   });

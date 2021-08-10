@@ -30,29 +30,31 @@ describe("PostsService", () => {
     expect(postService).toBeDefined();
   });
 
-  describe("create post", () => {
+  describe("create a new post", () => {
     it("It should create one post on the database", async () => {
-      postRepositoryMock.create.mockReturnValue(postUnitTestParams.newPost);
+      postRepositoryMock.create.mockReturnValue(mockedPost.create);
       postRepositoryMock.findOne.mockReturnValue(undefined);
-      expect(await postService.create(postUnitTestParams.newPost as Post))
-        .toEqual(postUnitTestParams.newPost);
-      expect(postRepositoryMock.create).toHaveBeenCalledWith(postUnitTestParams.newPost);
+      expect(await postService.create(mockedPost.create as Post))
+        .toEqual(mockedPost.create);
+      expect(postRepositoryMock.create)
+        .toHaveBeenCalledWith(mockedPost.create);
+    });
+
+    it("should throw error if post exists", async () => {
+      postRepositoryMock.findOne.mockReturnValue(postUnitTestParams.newPost);
+      try {
+        await postService.create(postUnitTestParams.newPost);
+      } catch (e) {
+        expect(e).toEqual(
+          new HttpException(
+            "Already exist post with this cpf",
+            HttpStatus.CONFLICT
+          )
+        );
+      }
     });
   });
 
-  it("should throw error if post exists", async () => {
-    postRepositoryMock.findOne.mockReturnValue(postUnitTestParams.newPost);
-    try {
-      await postService.create(postUnitTestParams.newPost);
-    } catch (e) {
-      expect(e).toEqual(
-        new HttpException(
-          "Already exist post with this cpf",
-          HttpStatus.CONFLICT
-        )
-      );
-    }
-  });
 
   describe("findAll post", () => {
     it("It should return array of all the post", async () => {
